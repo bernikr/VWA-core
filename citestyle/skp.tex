@@ -1,115 +1,17 @@
-% skpcite script for use at Sir-Karl-Popper-Schule by Valentin Huebner
+% the school now users the chicago manual of style (author/date)
+\usepackage[authordate,backend=biber]{biblatex-chicago}
 
-\usepackage[backend=biber, style=authoryear, refsection=none, maxcitenames=1, maxbibnames=99]{biblatex}
-% Im Fliesstext kein Trennzeichen zwischen Name und Jahr
-\DeclareFieldFormat{postnote}{#1}
-% Im Fliesstext Doppelpunkt vor Jahr
-\renewcommand{\postnotedelim}{: }
-% Titel ohne Anführungszeichen und nicht kursiv
-\DeclareFieldFormat{title}{#1}
-%  Alles ohne Anführungszeichen und kursiv
-\DeclareFieldFormat{title}{\mkbibemph{#1}}
-%  Artikel ohne Anführungszeichen und nicht kursiv
-\DeclareFieldFormat[article]{title}{#1}
-%  Dissertation ohne Anführungszeichen und nicht kursiv
-\DeclareFieldFormat[thesis]{title}{#1}
-%  Dissertation ohne Anführungszeichen und nicht kursiv
-\DeclareFieldFormat[incollection]{title}{#1}
-% Autor in Kapitaelchen
-\DeclareFieldFormat[book]{edition}{(#1)} % Ausgabe bei Büchern in Klammer
-\renewcommand{\mkbibnamefirst}[1]{\textsc{#1}}
-% s.o.
-\renewcommand{\mkbibnamelast}[1]{\textsc{#1}}
-% s.o.
-\renewcommand{\mkbibnameprefix}[1]{\textsc{#1}}
-% s.o.
-\renewcommand{\mkbibnameaffix}[1]{\textsc{#1}}
 
-% "In:" bei Journal-Artikeln entfernt,
-\renewbibmacro{in:}{
-	% aber für Sammelbaende beibehalten
-	\ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
-	% Journaltitel kursiv und gefolgt von Beistrich
-\DeclareFieldFormat{journaltitle}{\mkbibemph{#1},}
-
-\renewcommand{\mkbibbrackets}[1]{#1}
-
-\makeatletter
-\renewcommand\listoffigures{%
-	\chapter{\listfigurename}% Used to be \section*{\listfigurename}
-	\@mkboth{\MakeUppercase\listfigurename}%
-	        {\MakeUppercase\listfigurename}%
-	\@starttoc{lof}%
-}
-\makeatother
-
-\addto\captionsgerman{\renewcommand{\figurename}{Abb.}}
-
-\DefineBibliographyStrings{ngerman}{andothers={et~al\adddot}}
-
-\DeclareCiteCommand{\tabcite}
-	{\usebibmacro{prenote}}
-	{\usebibmacro{citeindex}}
-	{}
-	{\usebibmacro{postnote}}
-
-%justbecausevalentin wantedtodoit:
-\newcommand{\skpciteresource}[1]{
-  \addbibresource{#1}
-}
+%
+%	code stolen from skpcite script by Valentin Huebner
+%
 
 %cite  (\skpcite{Name der Quelle im .bib file}{Seitenzahl})
-\newcommand{\skpcite}[2]{\qvlink{\parencite[vgl.][#2]{#1}}}
-
-\newcommand{\Skpcite}[2]{\qvlink{\parencite[Vgl.][#2]{#1}}}
-
+\newcommand{\skpcite}[2]{\parencite[vgl.][#2]{#1}}
+\newcommand{\Skpcite}[2]{\parencite[Vgl.][#2]{#1}}
 %multicite \skpcitemulti[42]{Mixer202}[18]{Baron1992} beliebig viele möglich!
 \newcommand{\skpcitemulti}{\parencites(vgl.)()}
-
 \newcommand{\Skpcitemulti}{\parencites(Vgl.)()}
-
-
 %ref
-\newcommand{\skpref}[1]{\qvlink{(\cite[vgl.][]{#1})}}
-
-\newcommand{\Skpref}[1]{\qvlink{(\cite[Vgl.][]{#1})}}
-
-%Literaturverzeichnis (in .bib file: Keywords={lit} für Bücher und co und Keywords={web} für Internetquellen)
-\newcommand{\skpciteprintlit}{
-	\defbibheading{lit}{\chapter{Quellenverzeichnis}}
-	\printbibliography[heading=lit, keyword=lit]
-	\label{quellenverzeichnis}
-}
-
-\makeatletter
-\newcommand*{\tofnumberline}[1]{\hb@xt@7em{Abbildung~#1:\hfil}}
-\makeatother
-
-\makeatletter
-\renewcommand*\l@figure{\@dottedtocline{1}{0em}{2.3em}}% Default: 1.5em/2.3em
-\let\l@table\l@figure
-\makeatother
-
-%Abbildungsverzeichnis
-\newcommand{\skpciteprintfig}{
-	\DeclareCiteCommand{\tabcite}[\mkbibbrackets]
-		{\usebibmacro{prenote}}
-		{\usebibmacro{citeindex}%
-		 \usebibmacro{cite}}
-		{\multicitedelim}
-		{\usebibmacro{postnote}}
-
-	\renewcommand{\addvspace}[1]{}
-	\let\oldnumberline\numberline
-	\renewcommand{\numberline}{\tofnumberline}
-
-	\listoffigures
-
-	\label{abbildungsverzeichnis}
-}
-
-
-%Bildunterschrift (\skpcitecaption{kurzer Name für das Abb. Verzeichnis}{Bildunterschrift}{Name der Quelle im .bib file})
-\newcommand{\skpcitecaption}[3]{
-  \caption[\textit{#1}. \fullcite{#3}]{#2\tabcite{#3}}
-}
+\newcommand{\skpref}[1]{(\cite[vgl.][]{#1})}
+\newcommand{\Skpref}[1]{(\cite[Vgl.][]{#1})}
